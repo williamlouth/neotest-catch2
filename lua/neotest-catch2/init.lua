@@ -104,7 +104,7 @@ end
 function Adapter.results(spec, result, _)
     local success, data = pcall(lib.files.read, spec.context.results_path)
     if not success then
-        error("the runner command(" .. spec.command .. ") failed!")
+        error("the runner command(" .. spec.command .. ") not succeed!")
         return {}
     end
     local results = {}
