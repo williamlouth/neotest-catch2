@@ -122,7 +122,7 @@ function Adapter.results(spec, result, _)
 	local section_results = {}
 
 	local handler = xml.parse(data)
-	local testcases = utils.into_iter(handler.Catch.Group.TestCase)
+	local testcases = utils.into_iter(handler.Catch2TestRun.TestCase)
 	for _, testcase in ipairs(testcases) do
 		if testcase.Section ~= nil then
 			section_results = utils.extract_results(
