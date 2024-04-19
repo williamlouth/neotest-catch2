@@ -89,8 +89,8 @@ function Adapter.build_spec(args)
         test_args,
         vim.list_extend(get_args(), args.extra_args or {}, 1, #get_args())
     }), " ")
-    -- print("running command:", command)
-    -- print("current strategy: ", args.strategy)
+    print("running command:", command)
+    print("current strategy: ", args.strategy)
     local strategy_config = utils.get_strategy_config(args.strategy, test_args, runner, get_args().strategyConfig, "lldb")
     return { command = command,
         context = { results_path = results_path }, cwd = root, strategy = strategy_config }
