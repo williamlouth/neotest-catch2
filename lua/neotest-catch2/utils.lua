@@ -218,7 +218,7 @@ function M.build_positions_tree(file_path, source, captured_nodes)
 			type = match_type,
 			path = file_path,
 			name = name,
-			range = { definition:range() },
+			range = vim.treesitter.get_node_range(captured_nodes[match_type .. ".name"]),
 			tag = tag,
 			kind = kind,
 		}

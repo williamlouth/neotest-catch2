@@ -136,7 +136,7 @@ function Adapter.results(spec, result, _)
 		end
 		results = utils.merge_tables(results, section_results)
 	end
-	print("results: ", vim.inspect(results))
+	-- print("results: ", vim.inspect(results))
 	return results
 end
 
