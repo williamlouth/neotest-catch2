@@ -238,7 +238,7 @@ function M.extract_section_results(spec, result, testcase, main_filter)
 		status = "passed",
 		output = result.output,
 	}
-	for itemIdx, item in ipairs(M.into_iter(testcase)) do
+	for itemIdx, item in ipairs(testcase) do
 		if item.name == "Section" then
 			if next(testcase, itemIdx) ~= nil then
 				local _, expression = next(testcase, itemIdx)
