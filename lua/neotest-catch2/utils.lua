@@ -229,54 +229,47 @@ end
 --- Extracts results from the test results
 ---@param spec neotest.RunSpec
 ---@param result neotest.StrategyResult
----@param testcases table
----@param main_filter string?
+---@param testcase neotest.Tree
+---@param main_filter string
 ---@return Table
-function M.extract_section_results(spec, result, testcases, main_filter)
+function M.extract_section_results(spec, result, testcase, main_filter)
 	local results = {}
-	for _, testcase in ipairs(testcases) do
-		for itemIdx, item in ipairs(M.into_iter(testcase)) do
-			if item.name == "Section" then
-				local filter = main_filter or M.unescape_special_chars(item._attr.name)
-				local testFilter = main_filter or M.unescape_special_chars(testcase._attr.name)
-				if testcase[itemIdx + 1] ~= nil and testcase[itemIdx + 1].name == "Expression" then
-					local expressions = M.into_iter(testcase[itemIdx + 1])
+	for itemIdx, item in ipairs(M.into_iter(testcase)) do
+		if item.name == "Section" then
+			if testcase[itemIdx + 1] ~= nil and testcase[itemIdx + 1].name == "Expression" then
+				local expressions = M.into_iter(testcase[itemIdx + 1])
+				local errors = {}
+				for idx, expression in ipairs(expressions) do
+					local line = tonumber(expression._attr.line)
+					local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
+					errors[idx] = { message = message, line = line - 1 }
+					results[main_filter] = {
+						status = "failed",
+						short = message,
+						output = spec.context.results_path,
+					}
+				end
+				results[main_filter].errors = errors
+			else
+				if item.Expression ~= nil then
+					local expressions = M.into_iter(item.Expression)
 					local errors = {}
 					for idx, expression in ipairs(expressions) do
 						local line = tonumber(expression._attr.line)
 						local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
 						errors[idx] = { message = message, line = line - 1 }
-						results[testFilter] = {
+						results[filter] = {
 							status = "failed",
 							short = message,
 							output = spec.context.results_path,
 						}
 					end
-					results[testFilter].errors = errors
+					results[main_filter].errors = errors
 				else
-					if item.Expression ~= nil then
-						local expressions = M.into_iter(item.Expression)
-						local errors = {}
-						for idx, expression in ipairs(expressions) do
-							local line = tonumber(expression._attr.line)
-							local message = "\nOriginal: "
-								.. expression.Original
-								.. "\nExpanded: "
-								.. expression.Expanded
-							errors[idx] = { message = message, line = line - 1 }
-							results[filter] = {
-								status = "failed",
-								short = message,
-								output = spec.context.results_path,
-							}
-						end
-						results[testFilter].errors = errors
-					else
-						results[testFilter] = {
-							status = "passed",
-							output = result.output,
-						}
-					end
+					results[main_filter] = {
+						status = "passed",
+						output = result.output,
+					}
 				end
 			end
 		end
@@ -287,33 +280,31 @@ end
 --- Extracts results from the test results
 ---@param spec neotest.RunSpec
 ---@param result neotest.StrategyResult
----@param testcases table
+---@param testcase neotest.Tree
 ---@param main_filter string?
 ---@return Table
-function M.extract_results(spec, result, testcases, main_filter)
+function M.extract_results(spec, result, testcase, main_filter)
 	local results = {}
-	for _, testcase in ipairs(testcases) do
-		local filter = main_filter or M.unescape_special_chars(testcase._attr.name)
-		if testcase.Expression ~= nil then
-			local expressions = M.into_iter(testcase.Expression)
-			local errors = {}
-			for idx, expression in ipairs(expressions) do
-				local line = tonumber(expression._attr.line)
-				local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
-				errors[idx] = { message = message, line = line - 1 }
-				results[filter] = {
-					status = "failed",
-					short = message,
-					output = spec.context.results_path,
-				}
-			end
-			results[filter].errors = errors
-		else
+	local filter = main_filter or M.unescape_special_chars(testcase._attr.name)
+	if testcase.Expression ~= nil then
+		local expressions = M.into_iter(testcase.Expression)
+		local errors = {}
+		for idx, expression in ipairs(expressions) do
+			local line = tonumber(expression._attr.line)
+			local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
+			errors[idx] = { message = message, line = line - 1 }
 			results[filter] = {
-				status = "passed",
-				output = result.output,
+				status = "failed",
+				short = message,
+				output = spec.context.results_path,
 			}
 		end
+		results[filter].errors = errors
+	else
+		results[filter] = {
+			status = "passed",
+			output = result.output,
+		}
 	end
 	return results
 end

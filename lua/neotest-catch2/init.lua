@@ -125,14 +125,10 @@ function Adapter.results(spec, result, _)
 	local testcases = utils.into_iter(handler.Catch2TestRun.TestCase)
 	for _, testcase in ipairs(testcases) do
 		if testcase.Section ~= nil then
-			section_results = utils.extract_section_results(
-				spec,
-				result,
-				utils.into_iter(testcase),
-				utils.unescape_special_chars(testcase._attr.name)
-			)
+			section_results =
+				utils.extract_section_results(spec, result, testcase, utils.unescape_special_chars(testcase._attr.name))
 		else
-			results = utils.extract_results(spec, result, utils.into_iter(testcase))
+			results = utils.extract_results(spec, result, testcase)
 		end
 		results = utils.merge_tables(results, section_results)
 	end
