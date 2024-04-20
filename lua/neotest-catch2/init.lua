@@ -76,7 +76,7 @@ function Adapter.build_spec(args)
 	local make_temp_dir = "mkdir " .. temp_dir .. " &&"
 	local buildCommand = ""
 	if get_args().buildCommandFn ~= nil then
-		buildCommand = string.format("cd %s && %s && cd - && ", root, (get_args().buildCommandFn(target, root)))
+		buildCommand = string.format("pushd %s && %s && popd && ", root, (get_args().buildCommandFn(target, root)))
 	end
 	local test_args = {
 		"-r",
