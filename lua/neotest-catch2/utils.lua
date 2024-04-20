@@ -238,11 +238,6 @@ function M.extract_section_results(spec, result, testcase, main_filter)
 		status = "passed",
 		output = result.output,
 	}
-	results[main_filter] = {
-		status = "failed",
-		short = message,
-		output = spec.context.results_path,
-	}
 	for itemIdx, item in ipairs(M.into_iter(testcase.Section)) do
 		if item.Expression ~= nil then
 			local expressions = M.into_iter(item.Expression)
