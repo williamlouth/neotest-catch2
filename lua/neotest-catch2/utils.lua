@@ -246,7 +246,7 @@ function M.extract_section_results(spec, result, testcases, main_filter)
 						local line = tonumber(expression._attr.line)
 						local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
 						errors[idx] = { message = message, line = line - 1 }
-						results[filter] = {
+						results[testFilter] = {
 							status = "failed",
 							short = message,
 							output = spec.context.results_path,
@@ -272,7 +272,7 @@ function M.extract_section_results(spec, result, testcases, main_filter)
 						end
 						results[testFilter].errors = errors
 					else
-						results[filter] = {
+						results[testFilter] = {
 							status = "passed",
 							output = result.output,
 						}
