@@ -133,6 +133,7 @@ function M.get_runners(path, root, build_prefixes)
 			table.insert(words, word)
 		end
 		handle:close()
+		error(words)
 		local stripped = words[1]:sub(1, -2)
 
 		runners[#runners + 1] = build_dir .. stripped
