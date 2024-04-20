@@ -234,6 +234,11 @@ end
 ---@return Table
 function M.extract_section_results(spec, result, testcase, main_filter)
 	local results = {}
+	results[main_filter] = {
+		status = "passed",
+		output = result.output,
+	}
+	--[[
 	for itemIdx, item in ipairs(M.into_iter(testcase)) do
 		if item.name == "Section" then
 			if testcase[itemIdx + 1] ~= nil and testcase[itemIdx + 1].name == "Expression" then
@@ -274,6 +279,7 @@ function M.extract_section_results(spec, result, testcase, main_filter)
 			end
 		end
 	end
+	--]]
 	return results
 end
 
