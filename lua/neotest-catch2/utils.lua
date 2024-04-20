@@ -135,7 +135,7 @@ function M.get_runners(path, root, build_prefixes)
 		handle:close()
 		local stripped = words[1]:sub(1, -2)
 
-		runners[#runners + 1] = build_dir .. stripped
+		runners[#runners + 1] = build_dir .. "/" .. stripped
 	end
 	return runners
 end
