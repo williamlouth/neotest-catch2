@@ -268,8 +268,8 @@ function M.extract_section_results(spec, result, testcases, main_filter)
 								short = message,
 								output = spec.context.results_path,
 							}
-							results[filter].errors = errors
 						end
+						results[filter].errors = errors
 					else
 						results[filter] = {
 							status = "passed",
