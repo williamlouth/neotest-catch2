@@ -129,12 +129,13 @@ function M.get_runners(path, root, build_prefixes)
 		local res = handle:read("*a")
 		-- error(res .. " " .. testCppName .. " " .. " " .. build_dir .. " " .. root .. " " .. build_prefixes[1])
 		local words = {}
-		for word in res:gmatch("%w+") do
+		for word in res:gmatch("\\S+:") do
 			table.insert(words, word)
 		end
 		handle:close()
+		local stripped = words[1]:sub(1, -2)
 
-		runners[#runners + 1] = build_dir .. words[2]
+		runners[#runners + 1] = build_dir .. stripped
 	end
 	return runners
 end
