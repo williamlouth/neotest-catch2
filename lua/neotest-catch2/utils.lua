@@ -116,7 +116,7 @@ function M.get_runners(path, root, build_prefixes)
 	if root ~= nil then
 		-- print("path: ", path)
 		-- print("root: ", root)
-		local build_dir = root .. build_prefixes[1]
+		local build_dir = root .. "/" .. build_prefixes[1]
 
 		local pathParts = {}
 		for word in path:gmatch("[^/]+") do
