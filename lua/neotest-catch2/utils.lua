@@ -243,52 +243,39 @@ function M.extract_section_results(spec, result, testcase, main_filter)
 		short = message,
 		output = spec.context.results_path,
 	}
-	--
-	--[[
-	for itemIdx, item in ipairs(M.into_iter(testcase)) do
-		if item.name == "Section" then
+	for itemIdx, item in ipairs(M.into_iter(testcase.Section)) do
+		if item.Expression ~= nil then
+			local expressions = M.into_iter(item.Expression)
+			local errors = {}
+			for idx, expression in ipairs(expressions) do
+				local line = tonumber(expression._attr.line)
+				local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
+				errors[idx] = { message = message, line = line - 1 }
+				results[main_filter] = {
+					status = "failed",
+					short = message,
+					output = spec.context.results_path,
+				}
+			end
+			results[main_filter].errors = errors
+		end
+	end
+
+	if testcase.Expression ~= nil then
+		local expressions = M.into_iter(testcase.Expression)
+		local errors = {}
+		for idx, expression in ipairs(expressions) do
+			local line = tonumber(expression._attr.line)
+			local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
+			errors[idx] = { message = message, line = line - 1 }
 			results[main_filter] = {
 				status = "failed",
 				short = message,
 				output = spec.context.results_path,
 			}
-			if next(testcase, itemIdx) ~= nil then
-				local _, expression = next(testcase, itemIdx)
-				if expression.name == "Expression" then
-					local line = tonumber(expression._attr.line)
-					local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
-					results[main_filter] = {
-						status = "failed",
-						short = message,
-						output = spec.context.results_path,
-					}
-					results[main_filter].errors[0] = { message = message, line = line - 1 }
-				end
-			else
-				if item.Expression ~= nil then
-					local expressions = M.into_iter(item.Expression)
-					local errors = {}
-					for idx, expression in ipairs(expressions) do
-						local line = tonumber(expression._attr.line)
-						local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
-						errors[idx] = { message = message, line = line - 1 }
-						results[filter] = {
-							status = "failed",
-							short = message,
-							output = spec.context.results_path,
-						}
-					end
-					results[main_filter].errors = errors
-				else
-					results[main_filter] = {
-						status = "passed",
-						output = result.output,
-					}
-				end
-			end
 		end
+		results[main_filter].errors = errors
 	end
-				--]]
 	return results
 end
 
