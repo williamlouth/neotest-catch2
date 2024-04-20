@@ -123,16 +123,17 @@ function M.get_runners(path, root, build_prefixes)
 			end
 		end
 		local build_dir = root .. buildPrefix
-		-- print("build_dir: ", build_dir)
-		local test_runner_dir = Path:new(build_dir .. M.replace(path, root .. Path.path.sep, "")):parent()
-		for name, type in vim.fs.dir(tostring(test_runner_dir)) do
-			if type == "file" then
-				local name_path = Path:new(tostring(test_runner_dir) .. Path.path.sep .. name)
-				if M.is_executable(name_path) then
-					runners[#runners + 1] = name_path:absolute()
-				end
-			end
+
+		local cmd = "grep " .. build_dir .. "/build.ninja " .. '"' .. path .. '.o "'
+		local handle = io.popen(cmd)
+		local res = handle:read("*a")
+		local words = {}
+		for word in res:gmatch("%w+") do
+			table.insert(words, word)
 		end
+		handle:close()
+
+		runners[#runners + 1] = build_dir .. words[2]
 	end
 	return runners
 end
