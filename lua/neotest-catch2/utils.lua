@@ -124,7 +124,13 @@ function M.get_runners(path, root, build_prefixes)
 		end
 		local build_dir = root .. buildPrefix
 
-		local cmd = "grep " .. build_dir .. "/build.ninja " .. '"' .. path .. '.o "'
+		local pathParts = {}
+		for word in path:gmatch("[^/]+") do
+			table.insert(pathParts, word)
+		end
+		local testCppName = pathParts[#pathParts]
+
+		local cmd = "grep " .. build_dir .. "/build.ninja " .. '"' .. testCppName .. '.o "'
 		local handle = io.popen(cmd)
 		local res = handle:read("*a")
 		local words = {}
