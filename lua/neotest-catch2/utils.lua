@@ -262,7 +262,7 @@ function M.extract_section_results(spec, result, testcases, main_filter)
 								.. expression.Original
 								.. "\nExpanded: "
 								.. expression.Expanded
-							errors[idx] = { message = message, line = line - 2 }
+							errors[idx] = { message = message, line = line - 1 }
 							results[filter] = {
 								status = "failed",
 								short = message,
@@ -299,7 +299,7 @@ function M.extract_results(spec, result, testcases, main_filter)
 			for idx, expression in ipairs(expressions) do
 				local line = tonumber(expression._attr.line)
 				local message = "\nOriginal: " .. expression.Original .. "\nExpanded: " .. expression.Expanded
-				errors[idx] = { message = message, line = line - 2 }
+				errors[idx] = { message = message, line = line - 1 }
 				results[filter] = {
 					status = "failed",
 					short = message,
