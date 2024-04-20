@@ -133,6 +133,7 @@ function M.get_runners(path, root, build_prefixes)
 		local cmd = "grep " .. '"' .. testCppName .. '.o " ' .. build_dir .. "/build.ninja "
 		local handle = assert(io.popen(cmd))
 		local res = handle:read("*a")
+		error(res)
 		local words = {}
 		for word in res:gmatch("%w+") do
 			table.insert(words, word)
