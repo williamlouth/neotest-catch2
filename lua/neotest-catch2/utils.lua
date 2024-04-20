@@ -238,6 +238,7 @@ function M.extract_section_results(spec, result, testcases, main_filter)
 		for itemIdx, item in ipairs(M.into_iter(testcase)) do
 			if item.name == "Section" then
 				local filter = main_filter or M.unescape_special_chars(item._attr.name)
+				local testFilter = main_filter or M.unescape_special_chars(testcase._attr.name)
 				if testcase[itemIdx + 1] ~= nil and testcase[itemIdx + 1].name == "Expression" then
 					local expressions = M.into_iter(testcase[itemIdx + 1])
 					local errors = {}
@@ -251,7 +252,7 @@ function M.extract_section_results(spec, result, testcases, main_filter)
 							output = spec.context.results_path,
 						}
 					end
-					results[filter].errors = errors
+					results[testFilter].errors = errors
 				else
 					if item.Expression ~= nil then
 						local expressions = M.into_iter(item.Expression)
@@ -269,7 +270,7 @@ function M.extract_section_results(spec, result, testcases, main_filter)
 								output = spec.context.results_path,
 							}
 						end
-						results[filter].errors = errors
+						results[testFilter].errors = errors
 					else
 						results[filter] = {
 							status = "passed",
