@@ -118,7 +118,7 @@ function M.get_runners(path, root, build_prefixes)
 		-- print("root: ", root)
 		local buildPrefix = ""
 		for _, prefix in pairs(build_prefixes) do
-			if lib.files.exists(root .. prefix) then
+			if lib.files.is_dir(root .. prefix) then
 				buildPrefix = prefix
 			end
 		end
