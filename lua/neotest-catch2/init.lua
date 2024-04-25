@@ -88,7 +88,7 @@ function Adapter.build_spec(args)
 	local command = table.concat(
 		vim.tbl_flatten({
 			buildCommand,
-			make_temp_dir,
+			--make_temp_dir,
 			runner,
 			test_args,
 			vim.list_extend(get_args(), args.extra_args or {}, 1, #get_args()),
