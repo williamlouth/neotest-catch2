@@ -73,7 +73,7 @@ function Adapter.build_spec(args)
 	target = target[#target]
 	local temp_dir = get_args().tempDir or (async.fn.tempname() .. "/")
 	local results_path = temp_dir .. "test_result.xml"
-	local make_temp_dir = "mkdir " .. temp_dir .. " &&"
+	local make_temp_dir = "mkdir -p " .. temp_dir .. " &&"
 	local buildCommand = ""
 	if get_args().buildCommandFn ~= nil then
 		buildCommand = string.format("pushd %s && %s && popd && ", root, (get_args().buildCommandFn(target, root)))
