@@ -50,7 +50,7 @@ function Adapter.discover_positions(file_path)
 end
 
 ---@param path string
----@param path buildPrefix
+---@param buildPrefix string
 ---@return string
 function Adapter.get_runner(path, buildPrefix)
 	local runner = get_args().runner or utils.get_runner(path, buildPrefix)
