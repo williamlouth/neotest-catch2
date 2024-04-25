@@ -50,9 +50,9 @@ function Adapter.discover_positions(file_path)
 end
 
 ---@param path string
----@param buildPrefix string
 ---@return string
-function Adapter.get_runner(path, buildPrefix)
+function Adapter.get_runner(path)
+	local buildPrefix = get_args().buildPrefixes or { "build" }
 	local runner = get_args().runner or utils.get_runner(path, buildPrefix)
 	runner = (get_args().runnerPrefix or "") .. runner
 	if not runner then
