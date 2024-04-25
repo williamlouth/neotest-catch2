@@ -58,7 +58,9 @@ function Adapter.get_runner(path)
 	if not runner then
 		error("I couldn't find any test executable runner!")
 	end
-	return runner
+	local target = vim.split(runner, Path.sep, {})
+	target = target[#target]
+	return target
 end
 
 ---@param args neotest.RunArgs
