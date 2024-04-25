@@ -49,6 +49,18 @@ function Adapter.discover_positions(file_path)
 	return parsed
 end
 
+---@param path string
+---@param path buildPrefix
+---@return string
+function Adapter.get_runner(path, buildPrefix)
+	local runner = get_args().runner or utils.get_runner(path, buildPrefix)
+	runner = (get_args().runnerPrefix or "") .. runner
+	if not runner then
+		error("I couldn't find any test executable runner!")
+	end
+	return runner
+end
+
 ---@param args neotest.RunArgs
 ---@return nil | neotest.RunSpec | neotest.RunSpec[]
 function Adapter.build_spec(args)
