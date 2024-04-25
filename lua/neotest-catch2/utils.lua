@@ -316,26 +316,20 @@ end
 ---@param args neotest.RunArgs
 ---@param dap_adapter string
 function M.get_strategy_config(strategy, test_args, path, args, dap_adapter)
-	local config = {
-		dap = function()
-			local status_ok, _ = pcall(require, "dap")
-			if not status_ok then
-				return
-			end
-			local c = {
-				type = dap_adapter,
-				name = "Neotest Debugger",
-				request = "launch",
-				program = path,
-				stopOnEntry = false,
-				args = test_args,
-			}
-			local conf = M.merge_tables(c, args or {})
-			return conf
-		end,
-	}
-	if config[strategy] then
-		return config[strategy]()
+	if strategy == "dap" then
+		local status_ok, _ = pcall(require, "dap")
+		if not status_ok then
+			return
+		end
+		local c = {
+			name = "Neotest Debugger",
+			type = dap_adapter,
+			request = "launch",
+			program = path,
+			args = test_args,
+		}
+		local conf = M.merge_tables(c, args or {})
+		return conf
 	end
 end
 
