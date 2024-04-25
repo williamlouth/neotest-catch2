@@ -78,6 +78,11 @@ function Adapter.build_spec(args)
 	if get_args().buildCommandFn ~= nil then
 		buildCommand = string.format("pushd %s && %s && popd && ", root, (get_args().buildCommandFn(target, root)))
 	end
+
+	local gdbPre = ""
+	if args.strategy == "dap" then
+		gdbPre = " --args "
+	end
 	local test_args = {
 		"-r",
 		"xml",
@@ -89,6 +94,7 @@ function Adapter.build_spec(args)
 		vim.tbl_flatten({
 			buildCommand,
 			--make_temp_dir,
+			gdbPre,
 			runner,
 			test_args,
 			vim.list_extend(get_args(), args.extra_args or {}, 1, #get_args()),
