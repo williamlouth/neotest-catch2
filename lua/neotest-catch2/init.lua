@@ -71,8 +71,8 @@ function Adapter.build_spec(args)
 	end
 	local target = vim.split(runner, Path.sep, {})
 	target = target[#target]
-	local temp_dir = get_args().tempDir or (async.fn.tempname() .. "/")
-	local results_path = temp_dir .. "test_result.xml"
+	local temp_dir = async.fn.tempname()
+	local results_path = temp_dir .. "_test_result.xml"
 	local make_temp_dir = "mkdir -p " .. temp_dir .. " &&"
 	local buildCommand = ""
 	if get_args().buildCommandFn ~= nil then
