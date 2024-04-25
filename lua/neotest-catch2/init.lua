@@ -98,7 +98,7 @@ function Adapter.build_spec(args)
 	print("running command:", command)
 	print("current strategy: ", args.strategy)
 	local strategy_config =
-		utils.get_strategy_config(args.strategy, test_args, runner, get_args().strategyConfig, "lldb")
+		utils.get_strategy_config(args.strategy, test_args, runner, get_args().strategyConfig, "gdb")
 	return {
 		command = command,
 		context = { results_path = results_path },
